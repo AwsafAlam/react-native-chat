@@ -1,21 +1,64 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {Component} from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import Chat from './components/Chat'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+const messageData = [
+  {
+    id: 1,
+    userId: 1,
+    text: "Hello world",
+    error: false,
+    sending: false,
+    createdAt: "2018-10-03 12:13:24",
+  },
+  {
+    id: 2,
+    userId: 2,
+    text: "Hello world",
+    error: false,
+    sending: false,
+    createdAt: "2018-08-03 12:13:24",
+  },
+];
+
+class App extends Component {
+  state = {
+    messages: [],
+  };
+
+  componentDidMount = () => {
+    this.getMessages();
+  };
+
+  getMessages = () => {
+    this.setState({
+      messages: messageData,
+    });
+  };
+
+  sendMessage = message => {
+    this.setState(prevState => ({
+      messages: [message, ...prevState.messages],
+    }));
+  };
+
+  render() {
+    const { messages } = this.state;
+
+    return (
+      <Chat
+        messages={messages}
+        user={{
+          id: 1,
+        }}
+        chatter={{
+          id: 2,
+        }}
+        showChatterAvatar={true}
+        onSend={this.sendMessage}
+      />
+    );
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
